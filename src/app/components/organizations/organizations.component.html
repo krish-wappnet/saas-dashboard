@@ -1,0 +1,77 @@
+<div class="container mx-auto p-4">
+  <h1 class="text-2xl font-bold mb-4 dark:text-white">Organizations Management</h1>
+  
+  <!-- Search -->
+  <div class="mb-4">
+    <input 
+      [(ngModel)]="searchTerm"
+      (input)="onSearch()"
+      placeholder="Search organizations..."
+      class="border p-2 rounded w-full max-w-md dark:bg-gray-800 dark:text-white"
+    >
+  </div>
+
+  <!-- Organization Form -->
+  <form [formGroup]="orgForm" (ngSubmit)="onSubmit()" class="mb-4">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+      <input formControlName="name" placeholder="Organization Name" class="border p-2 rounded dark:bg-gray-800 dark:text-white">
+      <input formControlName="industry" placeholder="Industry" class="border p-2 rounded dark:bg-gray-800 dark:text-white">
+      <select formControlName="plan" class="border p-2 rounded dark:bg-gray-800 dark:text-white">
+        <option value="Free">Free</option>
+        <option value="Pro">Pro</option>
+        <option value="Enterprise">Enterprise</option>
+      </select>
+      <select formControlName="status" class="border p-2 rounded dark:bg-gray-800 dark:text-white">
+        <option value="Active">Active</option>
+        <option value="Suspended">Suspended</option>
+      </select>
+    </div>
+    <input type="file" formControlName="logo" class="mt-2">
+    <button 
+      type="submit" 
+      [disabled]="orgForm.invalid || isLoading"
+      class="mt-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+    >
+      {{ isLoading ? 'Creating...' : 'Create Organization' }}
+    </button>
+  </form>
+
+  <!-- Organizations Table -->
+  <div class="overflow-x-auto">
+    <table class="min-w-full bg-white dark:bg-gray-800 border">
+      <thead>
+        <tr class="bg-gray-100 dark:bg-gray-700">
+          <th class="px-4 py-2">Name</th>
+          <th class="px-4 py-2">Industry</th>
+          <th class="px-4 py-2">Plan</th>
+          <th class="px-4 py-2">Status</th>
+          <th class="px-4 py-2">Users</th>
+          <th class="px-4 py-2">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let org of organizations | paginate: { itemsPerPage: 10, currentPage: currentPage }" class="border-t">
+          <td class="px-4 py-2">{{ org.name }}</td>
+          <td class="px-4 py-2">{{ org.industry }}</td>
+          <td class="px-4 py-2">{{ org.plan }}</td>
+          <td class="px-4 py-2">{{ org.status }}</td>
+          <td class="px-4 py-2">{{ org.userCount }}</td>
+          <td class="px-4 py-2">
+            <button class="text-blue-500 hover:underline">Edit</button>
+            <button class="text-red-500 hover:underline ml-2" (click)="suspendOrg(org.id)">Suspend</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Pagination -->
+  <pagination-controls
+    (pageChange)="onPageChange($event)"
+    class="flex justify-center mt-4"
+  ></pagination-controls>
+
+  <div *ngIf="isLoading" class="text-center">
+    <div class="inline-block animate-spin rounded-full h-8 w-8 border-4 border-blue-500 border-t-transparent"></div>
+  </div>
+</div>

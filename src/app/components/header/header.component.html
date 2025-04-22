@@ -1,0 +1,24 @@
+<header class="bg-gray-800 text-white p-4 dark:bg-gray-900">
+    <div class="container mx-auto flex justify-between items-center">
+      <h1 class="text-xl font-bold">SaaS Dashboard</h1>
+      <div class="flex items-center space-x-4">
+        <select
+          [(ngModel)]="selectedOrgId"
+          (ngModelChange)="onOrgChange($event)"
+          class="bg-gray-700 p-2 rounded dark:bg-gray-800"
+        >
+          <option value="">Select Organization</option>
+          <option *ngFor="let org of organizations" [value]="org.id">{{ org.name }}</option>
+        </select>
+        <button
+          (click)="toggleDarkMode(!isDarkMode)"
+          class="bg-gray-700 px-4 py-2 rounded hover:bg-gray-600 dark:bg-gray-800"
+        >
+          {{ isDarkMode ? 'Light Mode' : 'Dark Mode' }}
+        </button>
+        <button class="bg-red-500 px-4 py-2 rounded hover:bg-red-600">
+          Logout
+        </button>
+      </div>
+    </div>
+  </header>
