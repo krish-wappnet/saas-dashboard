@@ -7,6 +7,10 @@ import { TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { HttpClient } from '@angular/common/http';
 import { routes } from './app.routes';
+import { userReducer } from './store/users.reducer';
+import { provideStore } from '@ngrx/store';
+import { provideEffects } from '@ngrx/effects';
+import { UserEffects } from './store/users.effects';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -22,6 +26,9 @@ export const appConfig: ApplicationConfig = {
       provide: TranslateLoader,
       useFactory: HttpLoaderFactory,
       deps: [HttpClient]
-    }
+    },
+    provideAnimations(),
+    provideStore({ users: userReducer }),
+    provideEffects([UserEffects]),
   ]
 };

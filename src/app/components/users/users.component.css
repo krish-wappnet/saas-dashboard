@@ -1,3 +1,52 @@
-.table-container {
-    overflow-x: auto;
-  }
+/* Custom Toastr Styling */
+.custom-toastr {
+  color: #ffffff; /* Tailwind text-white */
+  border-radius: 0.5rem; /* Tailwind rounded-lg */
+  padding: 1rem; /* Tailwind p-4 */
+  font-family: 'Inter', Arial, sans-serif; /* Modern font with fallback */
+  font-size: 0.875rem; /* Tailwind text-sm */
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); /* Tailwind shadow-md */
+  display: flex;
+  align-items: center;
+  z-index: 10000; /* High z-index to avoid overlap */
+  margin-top: 80px; /* Push below navbar */
+  border: 2px solid green; /* Debug border */
+}
+
+/* Success Toastr */
+.custom-toastr.toast-success {
+  background-color: #10b981; /* Tailwind bg-green-500 */
+}
+
+/* Error Toastr */
+.custom-toastr.toast-error {
+  background-color: #ef4444; /* Tailwind bg-red-500 */
+}
+
+/* Progress Bar */
+.custom-toastr .toast-progress {
+  background-color: #ffffff; /* White progress bar for contrast */
+  opacity: 0.8;
+}
+
+/* Close Button */
+.custom-toastr .toast-close-button {
+  color: #ffffff;
+  opacity: 0.8;
+  transition: opacity 0.2s ease;
+}
+
+.custom-toastr .toast-close-button:hover {
+  opacity: 1;
+}
+
+/* Title (e.g., 'Success', 'Error') */
+.custom-toastr .toast-title {
+  font-weight: 600; /* Tailwind font-semibold */
+  margin-right: 0.5rem; /* Tailwind mr-2 */
+}
+
+/* Message */
+.custom-toastr .toast-message {
+  font-weight: 400; /* Tailwind font-normal */
+}
