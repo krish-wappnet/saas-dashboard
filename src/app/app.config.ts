@@ -11,6 +11,7 @@ import { userReducer } from './store/users.reducer';
 import { provideStore } from '@ngrx/store';
 import { provideEffects } from '@ngrx/effects';
 import { UserEffects } from './store/users.effects';
+import { metaReducers, getInitialState } from './store/local-storage.metareducer';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -28,7 +29,12 @@ export const appConfig: ApplicationConfig = {
       deps: [HttpClient]
     },
     provideAnimations(),
-    provideStore({ users: userReducer }),
+    provideStore(
+      { users: userReducer },
+      {
+        metaReducers,
+        initialState: getInitialState(),
+      }),
     provideEffects([UserEffects]),
   ]
 };

@@ -66,27 +66,25 @@ export class ApiService {
   }
 
   getUsers(orgId: number): Observable<User[]> {
-    console.log('ApiService: getUsers called with orgId:', orgId);
-    return of(this.mockUsers.filter(u => u.orgId === orgId)).pipe(delay(100)); // Reduced delay
+    const storedUsers = localStorage.getItem('users');
+    const users: User[] = storedUsers ? JSON.parse(storedUsers) : this.mockUsers;
+  
+    return of(users.filter(u => u.orgId === orgId)).pipe(delay(100));
   }
-
+  
   createUser(user: User): Observable<User> {
-    console.log('ApiService: createUser called with user:', user);
-    const org = this.mockOrganizations.find(o => o.id === user.orgId);
-    if (org?.plan === 'Free' && org.userCount >= 5) {
-      console.error('ApiService: createUser error - Free plan limited to 5 users');
-      return throwError(() => new Error('Free plan limited to 5 users'));
-    }
-    const newUser = { ...user, id: this.mockUsers.length + 1 };
-    this.mockUsers.push(newUser);
-    if (org) {
-      const updatedOrg = { ...org, userCount: org.userCount + 1 };
-      const index = this.mockOrganizations.findIndex(o => o.id === org.id);
-      this.mockOrganizations[index] = updatedOrg;
-    }
-    
-    return of(newUser).pipe(delay(200)); // Reduced delay
+    const storedUsers = localStorage.getItem('users');
+    let users: User[] = storedUsers ? JSON.parse(storedUsers) : this.mockUsers;
+  
+    const newUser = { ...user, id: users.length + 1 };
+    users.push(newUser);
+  
+    // Save to localStorage
+    localStorage.setItem('users', JSON.stringify(users));
+  
+    return of(newUser).pipe(delay(100));
   }
+  
 
   getFeatures(orgId: number): Observable<Feature[]> {
     console.log('ApiService: getFeatures called with orgId:', orgId);
